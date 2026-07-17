@@ -2,9 +2,10 @@ import time
 import random
 from db import get_connection
 
-
+#list of operators that will be assigned to a task
 OPERATORS = ["Operator_A", "Operator_B", "Operator_C", "Operator_D"]
 
+#Function for creating alerts when telemetry thresholds are exceeded (Note: High & Critical alerts will automatically become incidents)
 def create_alert(asset_id, severity, alert_type, message):
     conn = get_connection()
     cursor = conn.cursor()
@@ -23,10 +24,12 @@ def create_alert(asset_id, severity, alert_type, message):
     if severity in ["CRITICAL", "HIGH"]:
         create_incident(alert_id, asset_id, severity, alert_type, message)
 
+#Function for recording and logging the initial operator action
 def create_incident(alert_id, asset_id, severity, alert_type, description):
     conn = get_connection()
     cursor = conn.cursor()
 
+    #Critical incidents are immediately assigned to supervisor while any other incidents will be assigned to an operator from the list of operators
     owner = "Mission_Supervisor" if severity == "CRITICAL" else random.choice(OPERATORS)
 
     cursor.execute("""
@@ -58,6 +61,7 @@ def create_incident(alert_id, asset_id, severity, alert_type, description):
     cursor.close()
     conn.close()
 
+#Function determines the fleet readiness based on these factors: battery lvl, GPS, Comms, and temp
 def update_asset_readiness(asset_id, battery, gps_status, comms_status, temperature):
     if battery < 20 or comms_status == "OFFLINE":
         readiness = "UNAVAILABLE"
@@ -86,12 +90,14 @@ def update_asset_readiness(asset_id, battery, gps_status, comms_status, temperat
     cursor.close()
     conn.close()
 
+#Function for loggin significant mission events for operational awareness
 def create_mission_event(asset_id, battery, gps_status, comms_status):
     conn = get_connection()
     cursor = conn.cursor()
 
     mission_id = "MISSION_ALPHA"
 
+    #Determine which mission event occurred
     if battery < 20:
         event_type = "BATTERY_CRITICAL"
         description = f"{asset_id} battery criticaly low at {battery}%"
@@ -123,10 +129,12 @@ def create_mission_event(asset_id, battery, gps_status, comms_status):
     cursor.close()
     conn.close()
 
+#Function for escalating incidents that are unresolved
 def escalate_old_incidents():
     conn = get_connection()
     cursor = conn.cursor()
 
+    #Escalate incidents older than 15 minutes
     cursor.execute("""
         UPDATE incidents
         SET escalated = TRUE,
@@ -154,6 +162,7 @@ def escalate_old_incidents():
     cursor.close()
     conn.close()
 
+#Function used to simulate operators resolving incidents (made it to where ~20% of incidents are automatically resolved)
 def auto_resolve_some_incidents():
     conn = get_connection()
     cursor = conn.cursor()
@@ -170,7 +179,7 @@ def auto_resolve_some_incidents():
     cursor.close()
     conn.close()
 
-
+#Function for processing the most recent telemetry record for each asset in the fleet
 def check_latest_telemetry():
     conn = get_connection()
     cursor = conn.cursor()
@@ -185,7 +194,8 @@ def check_latest_telemetry():
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
-    
+
+    #Evaluate each asset independently
     for row in rows:
         asset_id, battery, gps_status, comms_status, temperature = row
 
@@ -206,6 +216,7 @@ def check_latest_telemetry():
 
 
 def main():
+    #One monitoring cyle is executed every 10 seconds
     while True:
         print("Checking telemetry for alerts, incidents, readiness, and mission_events...")
         check_latest_telemetry()
