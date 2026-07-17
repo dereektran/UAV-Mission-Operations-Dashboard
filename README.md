@@ -47,7 +47,6 @@ The Grafana dashboard includes:
 * Fleet Readiness %
 * Open Incidents
 * Critical Incidents
-* MTTR
 * Readiness Distribution
 * Battery Levels by Asset
 * Incident Trend Over Time
@@ -84,13 +83,4 @@ docker compose down
 
 ## What I Learned
 
-This project helped me gain hands-on experience with containerized deployments, SQL database design, telemetry processing, alerting logic, incident management workflows, operational dashboards, and fleet readiness tracking.
-
-## Future Improvements
-
-* Add authentication and role-based access
-* Add more realistic telemetry behavior
-* Add historical incident reports
-* Add automated notification workflows
-* Deploy to a remote Linux server
-* Add Kubernetes as an advanced deployment option
+This project helped me gain hands on experience with containerized deployments, SQL database design, telemetry processing, alerting logic, incident management workflows, operational dashboards, and fleet readiness tracking.
