@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: mission_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/ops_tables.sql:/docker-entrypoint-initdb.d/02_ops_tables.sql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mission_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  telemetry_generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mission_telemetry_generator
+    command: python telemetry_generator.py
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  alert_engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mission_alert_engine
+    command: python alert_engine.py
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  grafana_data:
+  postgres_data:
