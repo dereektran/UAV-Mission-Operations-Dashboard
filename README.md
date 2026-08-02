@@ -83,4 +83,4 @@ docker compose down
 
 ## What I Learned
 
-Building this project helped me understand how raw telemetry can be transformed into actionable operational intelligence. Rather than simply collecting sensor data, I designed workflows that automatically evaluate asset health, generate alerts, create incidents, track fleet readiness, and visualize KPIs in real time. I also learned how to deploy a multi-service application using Docker so the entire stack could be started with a single command, making it much easier to develop and deploy consistently.
+Building this project helped me understand how raw telemetry can be transformed into actionable operational intelligence. Rather than simply collecting sensor data, I designed workflows that automatically evaluate asset health, generate alerts, create incidents, track fleet readiness, and visualize KPIs in real time. I also learned how to deploy a multi-service application using Docker so the entire stack could be started with a single command, eliminating manual dependency installation and ensuring the application runs consistently across different machines.
