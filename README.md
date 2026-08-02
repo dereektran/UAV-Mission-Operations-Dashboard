@@ -83,4 +83,4 @@ docker compose down
 
 ## What I Learned
 
-This project helped me gain hands on experience with containerized deployments, SQL database design, telemetry processing, alerting logic, incident management workflows, operational dashboards, and fleet readiness tracking.
+I learned that raw telemetry isn't very useful by itself. The real value comes from processing that data into information that helps operators make decisions. That's why I added incident management, readiness tracking, mission events, escalation workflows, and operational KPIs instead of only displaying sensor values. I also learned how to deploy a multi-service application using Docker so the entire stack could be started with a single command, making it much easier to develop and deploy consistently.
