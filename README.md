@@ -4,7 +4,7 @@
 
 This project simulates a mission operations platform for monitoring a fleet of autonomous assets. It generates real-time telemetry, detects operational issues, creates alerts and incidents, tracks asset readiness, logs operator actions, and visualizes operational KPIs through Grafana dashboards.
 
-The goal of this project is to model how technical operations, product operations, and mission operations teams monitor deployed systems and respond to incidents.
+The goal of this project is to model how an operations team monitor deployed systems and respond to incidents.
 
 ## Tech Stack
 
