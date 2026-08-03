@@ -6,6 +6,8 @@ This project simulates a mission operations platform for monitoring a fleet of a
 
 The goal of this project is to model how an operations team monitor deployed systems and respond to incidents.
 
+<img width="2170" height="1013" alt="image" src="https://github.com/user-attachments/assets/41424b79-d1f9-47b0-90b9-d7f4357be2bb" />
+
 ## Tech Stack
 
 * Python
@@ -45,13 +47,12 @@ Telemetry Generator → PostgreSQL → Alert Engine → Incidents / Readiness / 
 The Grafana dashboard includes:
 
 * Fleet Readiness %
+* Assets Requiring Immediate Attention
 * Open Incidents
-* Critical Incidents
-* Readiness Distribution
 * Battery Levels by Asset
+* Incident Status
 * Incident Trend Over Time
-* Incident Severity Breakdown
-* Mission Timeline
+* Assets with the Most Issues
 * Operator Activity Feed
 
 ## How to Run
