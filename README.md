@@ -81,6 +81,37 @@ To stop the stack:
 ```bash
 docker compose down
 ```
+## Optional: Secure Remote Access
+
+Tailscale provides an encrypted overlay network that allows authorized devices to access the running Grafana dashboard from different networks without intentionally exposing Grafana directly to the public internet.
+
+### Ubuntu Host
+
+Install Tailscale:
+
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
+```
+
+Check the connection and find the host's Tailscale IP:
+
+```bash
+tailscale status
+tailscale ip -4
+```
+
+### Remote Device
+
+Install Tailscale:
+
+[Tailscale Download](https://tailscale.com/download)
+
+After the remote device is authorized, access Grafana using:
+
+```text
+http://<TAILSCALE-IP>:3000
+```
 
 ## What I Learned
 
